@@ -72,5 +72,9 @@ int main(int argc, char const *argv[]) {
         std::cout << curr->item << std::endl;
     }
 
+    for(std::shared_ptr<Node<int> > curr = list.last; curr != nullptr; curr=curr->prev.lock()) {
+        std::cout << curr.get()->item << std::endl;
+    }
+
     return 0;
 }
