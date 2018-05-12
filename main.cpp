@@ -1,31 +1,28 @@
 #include <iostream>
 #include <memory>
 
-template<class T> class Node {
 
-private:
-
-
-
-public:
-    Node(const T &arg) {
-        this->item = arg;
-    }
-    std::shared_ptr<Node<T> > next;
-    std::weak_ptr<Node<T> > prev;
-    T item;
-};
 
 template<class T> class LinkedList {
 private:
+    class Node {
+    private:
 
+    public:
+        Node(const T &arg) {
+            this->item = arg;
+        }
+        std::shared_ptr<Node> next;
+        std::weak_ptr<Node> prev;
+        T item;
+    };
     unsigned int size;
 public:
     class iterator {
     protected:
-        std::shared_ptr<Node<T> > current;
+        std::shared_ptr<Node> current;
     public:
-        iterator(const std::shared_ptr<Node<T> > &current) {
+        iterator(const std::shared_ptr<Node> &current) {
             this->current = current;
         }
 
@@ -47,7 +44,7 @@ public:
 
     class reverse_iterator: public iterator {
     public:
-        reverse_iterator(const std::shared_ptr<Node<T> > &current): iterator(current) {
+        reverse_iterator(const std::shared_ptr<Node> &current): iterator(current) {
         }
 
         void operator++() {
@@ -56,8 +53,8 @@ public:
     };
 
 
-    std::shared_ptr<Node<T> > first;
-    std::shared_ptr<Node<T> > last;
+    std::shared_ptr<Node> first;
+    std::shared_ptr<Node> last;
 
     LinkedList() {
 
@@ -80,7 +77,7 @@ public:
     }
 
     void push_back(const T& arg) {
-        std::shared_ptr<Node<T> > el(new Node<T>(arg));
+        std::shared_ptr<Node>  el(new Node(arg));
         if (first == nullptr) {
             first = el;
             last = el;
@@ -93,7 +90,7 @@ public:
     }
 
     void push_front(const T& arg) {
-        std::shared_ptr<Node<T> > el(new Node<T>(arg));
+        std::shared_ptr<Node> el(new Node(arg));
         if (first == nullptr) {
             first = el;
             last = el;
