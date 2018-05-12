@@ -78,7 +78,7 @@ public:
     }
 
     void push_back(const T& arg) {
-        std::shared_ptr<Node>  el(new Node(arg));
+        std::shared_ptr<Node> el = std::make_shared<Node>(arg);
         if (first == nullptr) {
             first = el;
             last = el;
@@ -91,7 +91,7 @@ public:
     }
 
     void push_front(const T& arg) {
-        std::shared_ptr<Node> el(new Node(arg));
+        std::shared_ptr<Node> el = std::make_shared<Node>(arg);
         if (first == nullptr) {
             first = el;
             last = el;
