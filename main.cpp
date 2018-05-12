@@ -7,14 +7,17 @@ template<class T> class LinkedList {
 private:
     class Node {
     private:
-
+        T item;
     public:
         Node(const T &arg) {
             this->item = arg;
         }
         std::shared_ptr<Node> next;
         std::weak_ptr<Node> prev;
-        T item;
+
+        T& get() {
+            return item;
+        }
     };
     unsigned int size;
 public:
@@ -30,8 +33,8 @@ public:
             current = current->next;
         }
 
-        T operator*() {
-            return current.get()->item;
+        T& operator*() {
+            return current.get()->get();
         }
 
         bool operator!=(const iterator &other) {
