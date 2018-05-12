@@ -20,6 +20,8 @@ private:
         }
     };
     unsigned int size;
+    std::shared_ptr<Node> first;
+    std::shared_ptr<Node> last;
 public:
     class iterator {
     protected:
@@ -54,10 +56,6 @@ public:
             this->current = this->current->prev.lock();
         }
     };
-
-
-    std::shared_ptr<Node> first;
-    std::shared_ptr<Node> last;
 
     LinkedList() {
 
