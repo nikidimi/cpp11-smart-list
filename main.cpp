@@ -21,11 +21,62 @@ private:
 
     unsigned int size;
 public:
+    class iterator {
+    protected:
+        std::shared_ptr<Node<T> > current;
+    public:
+        iterator(const std::shared_ptr<Node<T> > &current) {
+            this->current = current;
+        }
+
+        virtual void operator++() {
+            current = current->next;
+        }
+
+        T operator*() {
+            return current.get()->item;
+        }
+
+        bool operator!=(const iterator &other) {
+            if (this->current == other.current) {
+                return false;
+            }
+            return true;
+        }
+    };
+
+    class reverse_iterator: public iterator {
+    public:
+        reverse_iterator(const std::shared_ptr<Node<T> > &current): iterator(current) {
+        }
+
+        void operator++() {
+            this->current = this->current->prev.lock();
+        }
+    };
+
+
     std::shared_ptr<Node<T> > first;
     std::shared_ptr<Node<T> > last;
 
     LinkedList() {
 
+    }
+
+    iterator begin() {
+        return iterator(first);
+    }
+
+    iterator end() {
+        return iterator(nullptr);
+    }
+
+    reverse_iterator rbegin() {
+        return reverse_iterator(last);
+    }
+
+    reverse_iterator rend() {
+        return reverse_iterator(nullptr);
     }
 
     void push_back(const T& arg) {
@@ -68,12 +119,12 @@ int main(int argc, char const *argv[]) {
     list.push_back(9);
     list.push_front(10);
 
-    for(Node<int> *curr = list.first.get(); curr != nullptr; curr=curr->next.get()) {
-        std::cout << curr->item << std::endl;
+    for(auto curr : list) {
+        std::cout << curr << std::endl;
     }
 
-    for(std::shared_ptr<Node<int> > curr = list.last; curr != nullptr; curr=curr->prev.lock()) {
-        std::cout << curr.get()->item << std::endl;
+    for(auto curr = list.rbegin(); curr != list.rend(); ++curr) {
+        std::cout << *curr << std::endl;
     }
 
     return 0;
