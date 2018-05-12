@@ -1,4 +1,5 @@
 #include <iostream>
+#include <memory>
 
 template<class T> class Node {
 
@@ -10,8 +11,8 @@ public:
     Node(const T &arg) {
         this->item = arg;
     }
-    Node<T> *next;
-    Node<T> *prev;
+    std::shared_ptr<Node<T> > next;
+    std::shared_ptr<Node<T> > prev;
     T item;
 };
 
@@ -20,15 +21,15 @@ private:
 
     unsigned int size;
 public:
-    Node<T> *first = nullptr;
-    Node<T> *last = nullptr;
+    std::shared_ptr<Node<T> > first;
+    std::shared_ptr<Node<T> > last;
 
     LinkedList() {
 
     }
 
     void push_back(const T& arg) {
-        Node<T> *el = new Node<T>(arg);
+        std::shared_ptr<Node<T> > el(new Node<T>(arg));
         if (first == nullptr) {
             first = el;
             last = el;
@@ -41,7 +42,7 @@ public:
     }
 
     void push_front(const T& arg) {
-        Node<T> *el = new Node<T>(arg);
+        std::shared_ptr<Node<T> > el(new Node<T>(arg));
         if (first == nullptr) {
             first = el;
             last = el;
@@ -67,7 +68,7 @@ int main(int argc, char const *argv[]) {
     list.push_back(9);
     list.push_front(10);
 
-    for(Node<int> *curr = list.first; curr != nullptr; curr=curr->next) {
+    for(Node<int> *curr = list.first.get(); curr != nullptr; curr=curr->next.get()) {
         std::cout << curr->item << std::endl;
     }
 
