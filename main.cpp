@@ -12,7 +12,7 @@ public:
         this->item = arg;
     }
     std::shared_ptr<Node<T> > next;
-    std::shared_ptr<Node<T> > prev;
+    std::weak_ptr<Node<T> > prev;
     T item;
 };
 
